@@ -82,6 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                             mv.putExtra("saldo",user[0].getSaldo());
                             mv.putExtra("key",key);
 
+                            // add some test code
+
 //                            Bundle bundle = new Bundle();
 //                            bundle.putString("username", user[0].getName());
 //                            bundle.putString("email", user[0].getEmail());
