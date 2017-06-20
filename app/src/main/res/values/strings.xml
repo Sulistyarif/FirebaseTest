@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Firebase Test</string>
+    <string-array name="harga">
+        <item>Rp 2000,00</item>
+        <item>Rp 4000,00</item>
+        <item>Rp 6000,00</item>
+    </string-array>
+</resources>
