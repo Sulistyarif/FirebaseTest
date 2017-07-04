@@ -79,9 +79,8 @@ public class RegisterActivity extends AppCompatActivity {
                 userId = mFirebaseDatabase.push().getKey();
             }
 
-            User user = new User(namaUser,emailUser,paswot,saldoAwal);
-
-            mFirebaseDatabase.child(userId).setValue(user);
+            // menambahkan data ke firebase dengan id = ""
+            mFirebaseDatabase.child(nama.getText().toString()).setValue(new User(nama.getText().toString(), email.getText().toString(), password.getText().toString(), ""));
 
     }
 

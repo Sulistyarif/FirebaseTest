@@ -9,16 +9,33 @@ public class User {
     public String email;
     public String paswot;
     public int saldo;
+    public String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public User(){
 
     }
 
-    public User(String name, String email, String paswot, int saldo){
+    public User(String name, String email, String paswot, String id) {
+        this.name = name;
+        this.email = email;
+        this.paswot = paswot;
+        this.id = id;
+    }
+
+    public User(String name, String email, String paswot, int saldo, String id) {
         this.name = name;
         this.email = email;
         this.paswot = paswot;
         this.saldo = saldo;
+        this.id = id;
     }
 
     public String getName(){

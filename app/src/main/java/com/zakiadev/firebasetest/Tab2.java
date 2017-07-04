@@ -23,8 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 public class Tab2 extends Fragment {
 
     private TextView tvData1,tvData2,tvData3,tvData4;
-    private int saldo;
-    public String username, email, password;
+    private int saldo,fsaldo;
+    public String username, email, password, id;
     private String key;
     private Button btn;
     private DatabaseReference mFirebaseDatabase;
@@ -41,7 +41,7 @@ public class Tab2 extends Fragment {
 
         View view = inflater.inflate(R.layout.tab2, container, false);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("relation");
 
         username = getArguments().getString("username");
         System.out.println(username);
@@ -49,31 +49,23 @@ public class Tab2 extends Fragment {
         password = getArguments().getString("password");
         saldo = getArguments().getInt("saldo");
         key = getArguments().getString("key");
+        id = getArguments().getString("id");
 
-        mFirebaseDatabase.child(key).addValueEventListener(new ValueEventListener() {
+        DatabaseReference data = mFirebaseDatabase.child(id);
+        data.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                System.out.println("Username : " + user.getName() +
-                " Email : " + user.getEmail() +
-                " Password : " + user.getPaswot() +
-                " Saldo : " + user.getSaldo());
-                username = user.getName();
-                email = user.getEmail();
-                password = user.getPaswot();
-                saldo = user.getSaldo();
-                tvData1.setText("Telepon : " + username);
-                tvData2.setText("Email : " + email);
-                tvData3.setText("Password : " + password);
-                tvData4.setText("Saldo : " + saldo);
+                Relation dataDiambil = dataSnapshot.getValue(Relation.class);
+                fsaldo = dataDiambil.getSaldo();
+                tvData4.setText("Saldo : " + fsaldo);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("Gagal Update coi..");
+
             }
         });
-
+        
         tvData1 = (TextView)view.findViewById(R.id.tvData1);
         tvData2 = (TextView)view.findViewById(R.id.tvData2);
         tvData3 = (TextView)view.findViewById(R.id.tvData3);
@@ -86,14 +78,16 @@ public class Tab2 extends Fragment {
         tvData3.setText("Password : " + password);
         tvData4.setText("Saldo : " + saldo);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "Seharusnya saldo anda akan berkurang..", Snackbar.LENGTH_LONG).setAction("No action",null).show();
-                int kurangSaldo = saldo - 500;
-                mFirebaseDatabase.child(key).child("saldo").setValue(kurangSaldo);
-            }
-        });
+
+        // simulasi mengurangi saldo
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Snackbar.make(v, "Seharusnya saldo anda akan berkurang..", Snackbar.LENGTH_LONG).setAction("No action",null).show();
+//                int kurangSaldo = saldo - 500;
+//                mFirebaseDatabase.child(key).child("saldo").setValue(kurangSaldo);
+//            }
+//        });
 
         return view;
     }

@@ -33,7 +33,7 @@ public class Tab3 extends Fragment {
     private static CustomAdapterTab3 adapterTab3;
     private DatabaseReference mFirebaseDatabase;
     public int saldo;
-    public String key;
+    public String uid;
     int tambahSaldo;
 
     @Nullable
@@ -41,9 +41,11 @@ public class Tab3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.tab3,container,false);
-        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("relation");
 
         listView = (ListView)view.findViewById(R.id.list_view_tab3);
+
+        uid = getArguments().getString("id");
 
         data = new ArrayList<>();
 
@@ -51,28 +53,11 @@ public class Tab3 extends Fragment {
         data.add(new DataTab3("Rp4000,00",4000));
         data.add(new DataTab3("Rp6000,00",6000));
 
-//        saldo = getArguments().getInt("saldo");
-        key = getArguments().getString("key");
-
-        mFirebaseDatabase.child(key).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User saldoUser = dataSnapshot.getValue(User.class);
-//                tambahSaldo = saldoUser.getSaldo() + dataClick.getHarga();
-                saldo = saldoUser.getSaldo();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         adapterTab3 = new CustomAdapterTab3(data,getContext());
         listView.setAdapter(adapterTab3);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, final View view, int position, final long id) {
                 final DataTab3 dataClick = data.get(position);
 //                Snackbar.make(view, dataClick.getHargaString(), Snackbar.LENGTH_LONG).setAction("No action",null).show();
                 AlertDialog.Builder alertBuild = new AlertDialog.Builder(getContext());
@@ -91,12 +76,25 @@ public class Tab3 extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Snackbar.make(view, "Saldo anda bertambah sebesar " + dataClick.getHargaString(), Snackbar.LENGTH_LONG).setAction("No action",null).show();
                         tambahSaldo = saldo + dataClick.getHarga();
-                        mFirebaseDatabase.child(key).child("saldo").setValue(tambahSaldo);
+                        mFirebaseDatabase.child(uid).child("saldo").setValue(tambahSaldo);
                     }
                 });
 
                 AlertDialog alertDialog = alertBuild.create();
                 alertDialog.show();
+
+            }
+        });
+
+        mFirebaseDatabase.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Relation dataDidapat = dataSnapshot.getValue(Relation.class);
+                saldo = dataDidapat.getSaldo();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });

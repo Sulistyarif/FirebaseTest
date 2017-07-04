@@ -20,7 +20,7 @@ public class FragmentedActivity extends AppCompatActivity implements TabLayout.O
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private String username, email, password, key;
+    private String username, email, password, key,id;
     private int saldo;
 
     @Override
@@ -35,13 +35,14 @@ public class FragmentedActivity extends AppCompatActivity implements TabLayout.O
         password = passIntent.getStringExtra("password");
         saldo = passIntent.getIntExtra("saldo",0);
         key = passIntent.getStringExtra("key");
+        id = passIntent.getStringExtra("id");
 
         System.out.println("data username : " + username);
 
         tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         viewPager = (ViewPager)findViewById(R.id.pager);
 
-        Pager adapter = new Pager(username,email,password,saldo,key,getSupportFragmentManager(),3);
+        Pager adapter = new Pager(username,email,password,saldo,key,id,getSupportFragmentManager(),3);
 
         viewPager.setAdapter(adapter);
 

@@ -12,9 +12,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class Pager extends FragmentPagerAdapter{
 
     int tabCount,saldo;
-    String username,email,password, key;
+    String username,email,password, key,id;
 
-    public Pager(String username, String email, String password, int saldo, String key, FragmentManager fm, int tabCount) {
+    public Pager(String username, String email, String password, int saldo, String key, String id, FragmentManager fm, int tabCount) {
         super(fm);
         this.tabCount = tabCount;
         this.username = username;
@@ -22,6 +22,7 @@ public class Pager extends FragmentPagerAdapter{
         this.password = password;
         this.saldo = saldo;
         this.key = key;
+        this.id = id;
     }
 
     @Override
@@ -38,11 +39,13 @@ public class Pager extends FragmentPagerAdapter{
                 bundle.putString("password",password);
                 bundle.putInt("saldo",saldo);
                 bundle.putString("key",key);
+                bundle.putString("id",id);
                 tab2.setArguments(bundle);
                 return tab2;
             case 2 :
                 Tab3 tab3 = new Tab3();
                 Bundle bundle3 = new Bundle();
+                bundle3.putString("id",id);
                 bundle3.putInt("saldo",saldo);
                 bundle3.putString("key",key);
                 tab3.setArguments(bundle3);
