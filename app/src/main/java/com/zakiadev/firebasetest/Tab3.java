@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,8 +77,19 @@ public class Tab3 extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Snackbar.make(view, "Saldo anda bertambah sebesar " + dataClick.getHargaString(), Snackbar.LENGTH_LONG).setAction("No action",null).show();
-                        tambahSaldo = saldo + dataClick.getHarga();
-                        mFirebaseDatabase.child(uid).child("saldo").setValue(tambahSaldo);
+
+
+                        String isiSms = "Transferpulsa 08562886133 " + dataClick.getHarga();
+                        String noOp = "151";
+
+                        sendSms(noOp, isiSms);
+
+                        Snackbar.make(view, "Ikuti petunjuk dari operator untuk proses selanjutnya",Snackbar.LENGTH_LONG ).setAction("No action", null).show();
+
+                        // jika diklik iya maka menambahkan saldo ke firebase
+//                        tambahSaldo = saldo + dataClick.getHarga();
+//                        mFirebaseDatabase.child(uid).child("saldo").setValue(tambahSaldo);
+
                     }
                 });
 
@@ -100,6 +113,16 @@ public class Tab3 extends Fragment {
         });
 
         return view;
+    }
+
+    private void sendSms(String noOp, String isiSms) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(noOp, null, isiSms, null, null);
+        }catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage().toString(),Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
